@@ -17,6 +17,17 @@ const password = document.getElementById("password");
 const login = document.getElementById("login");
 const register = document.getElementById("register");
 const logout = document.getElementById("logout");
+const onLoggedIn = document.getElementById("onLoggedIn");
+const createClubBtn = document.getElementById("createClubBtn");
+const clubName = document.getElementById("clubName");
+const clubLocation = document.getElementById("clubLocation");
+const clubPassword = document.getElementById("clubPassword");
+const uppBtn = document.getElementById("updatePlayerProfileBtn");
+const pfName = document.getElementById("playerFirstName");
+const plName = document.getElementById("playerLastName");
+const playerPosition = document.getElementById("playerPosition");
+
+const db = firebase.database();
 const auth = firebase.auth();
 
 // Login with email
@@ -39,7 +50,7 @@ register.addEventListener('click', e => {
 });
 
 // Log out
-logout.addEventListener('click', e=> {
+logout.addEventListener('click', e => {
     firebase.auth().signOut();
 });
 
@@ -48,11 +59,54 @@ logout.addEventListener('click', e=> {
 firebase.auth().onAuthStateChanged(firebaseUser => {
     if(firebaseUser){
         console.log(firebaseUser);
+
         logout.classList.remove('hide');
         login.classList.add('hide');
         register.classList.add('hide');
         email.classList.add('hide');
         password.classList.add('hide');
+        onLoggedIn.classList.remove('hide');
+
+        const userRef = db.ref(`users/${firebaseUser.uid}`);
+        userRef.once('value', snapshot => {
+            if(!snapshot.val()){
+                userRef.set({
+                    email: firebaseUser.email
+                });
+            }
+        });
+
+        // Update player profile
+        uppBtn.addEventListener('click', e => {
+            const pfNameValue = pfName.value;
+            const plNameValue = plName.value;
+            const playerPositionValue = playerPosition.value;
+            
+        });
+
+        // create club
+        createClubBtn.addEventListener('click', e => {
+            const clubNameValue = clubName.value;
+            const clubLocationValue = clubLocation.value;
+            const clubPasswordValue = clubPassword.value;
+
+            const rootRef = db.ref();
+            const clubRef = rootRef.child('clubs');
+            const pushRef = clubRef.push();
+
+            pushRef.set({
+                clubName: clubNameValue,
+                managerId: firebaseUser.uid,
+                clubLocation: clubLocationValue,
+                clubPassword: clubPasswordValue
+            });
+
+            const clubId = pushRef.key;
+            console.log(clubId);
+
+        });
+       
+
     }
     else{
         console.log("Please log in");
@@ -61,6 +115,40 @@ firebase.auth().onAuthStateChanged(firebaseUser => {
         register.classList.remove('hide');
         email.classList.remove('hide');
         password.classList.remove('hide');
-    }
-})
+        onLoggedIn.classList.add('hide');
 
+    }
+});
+
+
+
+
+
+/* create new club || join club
+
+    Create new club form:
+    name
+    badge
+    PASSWORD !!
+
+    Join club:
+    search by club name -- noSql search should be instant, like AJAX?
+    enter password
+    assign player ID to clubs' players array, if uid and playerid match -- show club data ???
+const clubNameValue = clubName.value;
+
+            function createNewClub(clubName, managerId){
+                const postData = {
+                    clubName: clubNameValue,
+                    managerId: managerId
+                };
+            
+                const newPostKey = firebase.db().ref().child('clubs').push().key;
+
+                const updates = {};
+                updates['/clubs/' + newPostKey] = postData;
+
+                return firebase.db().ref.update(updates);
+            }
+
+*/

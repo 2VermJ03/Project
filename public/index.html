@@ -25,14 +25,49 @@
 
 </head>
 <body>
-  <h1 id="header">LocalLeague</h1>
+    <h1 id="header">LocalLeague</h1>
 
-  <input type="text" id="email">
-  <input type="password" id="password">
+    <input type="text" id="email">
+    <input type="password" id="password">
 
-  <button id="login">Login</button>
-  <button id="register">Register</button>
-  <button id="logout">Log out</button>
+    <button id="login">Login</button>
+    <button id="register">Register</button>
+    <button id="logout">Log out</button>
+
+    <div id="onLoggedIn" class="hide">
+        <div id="playerProfile">
+          <h2>Player Profile</h2>
+          <input type="text" id="playerFirstName">Player first name
+          <input type="text" id="playerLastName">Player last name
+          Player Position
+          <select id="playerPosition">
+              <option value="ATK">ATK</option>
+              <option value="MID">MID</option>
+              <option value="DEF">DEF</option>
+              <option value="GK">GK</option>
+          </select>
+          <button id="updatePlayerProfileBtn">Update</button>
+        </div>
+
+        <div id="createClub">
+          <h2>Create a club</h2>
+          <input type="text" id="clubName">Club Name
+          <input type="text" id="clubLocation">Club Location
+          <input type="text" id="clubPassword">Club Password
+        
+          <button id="createClubBtn">Create club</button>
+      
+        </div>
+
+
+
+  </div>
+  
+
+
+
+
+
 
   <!-- Custom scripts -->
   <script src="app.js"></script>
